@@ -7,7 +7,7 @@
 // Updated: 2012-05-21
 // REQUIRES: jquery 1.7.x
 
-define('modules/jquery.event.drag',function(require,exports,module){
+define('modules/jquery.event.drag-2.2',function(require,exports,module){
 var jQuery = require('$');
 ;(function( $ ){
 
