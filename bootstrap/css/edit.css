@@ -1,0 +1,25 @@
+/*区域边界线-编辑面板等*/
+.container .box{
+    position:relative;
+}
+.container .item-box{
+    border:#eee solid 3px;
+    padding:5px;
+    margin:5px;
+}
+.container .edit-box{
+    position:absolute;
+    top:-20px;
+    left:0px;
+    width:150px;
+}
+.container .edit-box .navbar{
+    margin:0px;
+}
+.container .edit-box .navbar-inner{
+    min-height:18px;
+    padding:0px;
+}
+.container .edit-box .edit-li a{
+    padding:3px 3px;
+}
