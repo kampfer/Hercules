@@ -7,7 +7,21 @@ define('config',function(require,exports,module){
             'events':'modules/events',
             'class':'modules/class',
             'backbone':'modules/backbone',
-            'underscore':'modules/underscore'
+            'underscore':'modules/underscore',
+            'aspect':'modules/aspect',
+            'attribute':'modules/attribute',
+            'auto-render':'modules/auto-render',
+            'base':'modules/base',
+            'daparser':'modules/daparser',
+            'handlebars':'modules/handlebars',
+            'iframe-shim':'modules/iframe-shim',
+            'mask':'modules/mask',
+            'overlay':'modules/overlay',
+            'position':'modules/position',
+            'templatable':'modules/templatable',
+            'widget':'modules/widget',
+            'dialog':'modules/dialog',
+            'ui':'modules/jquery-ui.min'
         }
     };
 });

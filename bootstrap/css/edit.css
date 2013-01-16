@@ -10,14 +10,18 @@
 }
 .container .item-box .drag-bar{
     position:absolute;
-    top:0px;
-    right:0px;
+    top:1px;
+    right:1px;
+    padding:2px 5px;
+    border:#eee solid 1px;
+    cursor:move;
+    background:#fefefe;
 }
 .container .edit-box{
     position:absolute;
     top:-20px;
     left:0px;
-    width:150px;
+    width:160px;
 }
 .container .edit-box .navbar{
     margin:0px;
@@ -28,4 +32,21 @@
 }
 .container .edit-box .edit-li a{
     padding:3px 3px;
+}
+
+/*blocks*/
+.blocks .blocks-close{
+    position:absolute;
+    background:#000;
+    color:#fff;
+    width:20px;
+    height:20px;
+    text-align:center;
+    line-height:15px;
+    right:0px;
+    top:0px;
+    cursor:pointer;
+}
+.blocks .blocks-content{
+    padding:20px;
 }
