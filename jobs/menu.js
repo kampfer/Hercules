@@ -1,6 +1,7 @@
-define('jobs/menu',function(require,exports,module){
+define('jobs/menu', function(require, exports, module) {
 
-    var backbone = require('backbone');
+	var backbone = require('backbone'),
+	Model = require('class/hercules-model');
 
 	var mianMenu = backbone.View.extend({
 		el: '[node-type=menu]',
@@ -151,5 +152,6 @@ define('jobs/menu',function(require,exports,module){
 
 		}
 	});
-    module.exports = mianMenu;
+	module.exports = mianMenu;
 });
+

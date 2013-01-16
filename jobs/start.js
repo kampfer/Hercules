@@ -2,10 +2,10 @@ define('jobs/start', function(require, exports, module) {
 
 	var backbone = require('backbone'),
 	$ = require('$'),
+	Model = require('class/hercules-model'),
 	Collection = require('class/hercules-collection'),
 	blocks = require('jobs/blocks'),
     Menu = require('jobs/menu'),
-	Model = require('class/hercules-model'),
 	Render = require('jobs/render');
 
 	var HerculesModel = new Collection.row();
