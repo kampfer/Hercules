@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Hercules</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Hercules demo for edit model">
+        <meta name="author" content="xiaojue,kampfer">
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-1.9.2.custom.min.css">
+        <link href="bootstrap/css/edit.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <script src="script/html5.js"></script>
+        <script src="script/css3-mediaqueries.js">
+            <script src="script/es5-shim.js">
+                <![endif]-->
+        <script src="lithe/lithe.js" data-path="./" data-main="app.js" data-config="config.js"></script>
+        <style type="text/css">
+            .row-fluid{
+                margin: 10px 0;
+            }
+            [class*="span"]{
+                border: 1px solid #ccc;
+                overflow: hidden;
+                background-color: white;
+            }
+            .content{
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="page-header">
+                <h1>Hercules</h1>
+            </div>
+            <div class="row-fluid" id="test-row">
+                <!-- 结构以第一个span2为参考 -->
+                <div class="span2" id="test" col="2">
+                    <div class="content">【武汉最贵“限价房”单价1.1万元 定向销售给拆迁户】昨日，武汉举行今年第二次国有建设用地出让，其中民生路与黄陂街交会处的一宗限价房用地，地价达到6846元/平方米，建成后单价上限定为1.1万元，定向销售给拆迁户。业内人士认为，这个价格或成市场对该片区房价划出的"底线"。</div>
+                </div>
+                <div class="span10" col="10" id="test2">
+                    <div class="content">杰伦秀粤语，2001年度十大劲歌金曲颁奖典礼《开不了口》现场版！（一首杰伦曲一段回忆事）</div>
+                </div>
+            </div>
+            <div class="row-fluid" id="test-row2">
+                <div class="span2" col="2" id="test3"><div class="content"><img node-type="image" src="http://twitter.github.com/bootstrap/assets/img/bs-docs-responsive-illustrations.png" alt=""></div></div>
+                <div class="span4" col="4" id="test4"><div class="content"><img node-type="image" src="http://twitter.github.com/bootstrap/assets/img/bs-docs-responsive-illustrations.png" alt=""></div></div>
+                <div class="span6" col="6" id="test5"><div class="content"><img node-type="image" src="http://twitter.github.com/bootstrap/assets/img/bs-docs-responsive-illustrations.png" alt=""></div></div>
+            </div>
+        </div>
+    </body>
+</html>
