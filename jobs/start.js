@@ -86,15 +86,27 @@ define('jobs/start',function(require,exports,module){
                         new Model.text({col:3}),
                         new Model.mixed({
                             col:9,
-                            row:[
+                            children:[
                                 new Model.mixed({
                                     col:2,
-                                    row:[
+                                    children:[
                                         new Model.text({col:3}),
                                         new Model.image({col:9})
                                     ]
                                 }),
-                                new Model.image({col:10})
+                                new Model.mixed({
+                                    col:10,
+                                    children:[
+                                        new Model.image({col:3}),
+                                        new Model.mixed({
+                                            col:9,
+                                            children:[
+                                                new Model.text({col:9}),
+                                                new Model.image({col:3})
+                                            ]
+                                        })
+                                    ]
+                                })
                             ]
                         })
                     ]
@@ -103,14 +115,14 @@ define('jobs/start',function(require,exports,module){
                     col:12,
                     children:[
                         new Model.text({col:3}),
-                        new Model.mixed({col:9,row:[new Model.text({col:2}),new Model.image({col:10})]})
+                        new Model.mixed({col:9,children:[new Model.text({col:2}),new Model.image({col:10})]})
                     ]
                 },     
                 {
                     col:12,
                     children:[
                         new Model.text({col:3}),
-                        new Model.mixed({col:9,row:[new Model.text({col:2}),new Model.image({col:10})]})
+                        new Model.mixed({col:9,children:[new Model.text({col:2}),new Model.image({col:10})]})
                     ]
                 }     
             ]);
