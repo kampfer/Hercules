@@ -1,6 +1,7 @@
 define('jobs/blocks', function(require, exports, module) {
 	var $ = require('$'),
     backbone = require('backbone'),
+    model = require('class/hercules-model'),
     dialog = require('dialog');
     
     var blocks = new dialog({
@@ -20,11 +21,11 @@ define('jobs/blocks', function(require, exports, module) {
             'click [action-type=image]':'addImage'
         },
         addText:function(){
-            console.log('add text');
+            this.model.add({children:[new model.text()]});
             this.hide();
         },
         addImage:function(){
-            console.log('add image');
+            this.model.add({children:[new model.image()]});
             this.hide();
         },
         show:function(){
@@ -35,7 +36,7 @@ define('jobs/blocks', function(require, exports, module) {
         }
     });
     //返回一个视图对象
-    module.exports = new blockView();
+    module.exports = blockView;
     
 });
 

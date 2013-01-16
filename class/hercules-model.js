@@ -35,6 +35,10 @@ define('class/hercules-model', function(require, exports, module) {
     });
     //行类型
     var rowModel = backbone.Model.extend({
+        defaults:{
+            col:12,
+            children:[]
+        },
         initialize:function(){
            //console.log(this); 
         }
