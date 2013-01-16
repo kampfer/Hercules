@@ -1,6 +1,8 @@
 define('jobs/menu', function(require, exports, module) {
 
 	var backbone = require('backbone'),
+    _ = require('underscore'),
+    previewTpl = require('jobs/previewTpl'),
 	Model = require('class/hercules-model');
 
 	var mianMenu = backbone.View.extend({
@@ -55,9 +57,9 @@ define('jobs/menu', function(require, exports, module) {
 				})]
 			}]);
 			this.renderAll();
-            //删除操作
-            //this.model.getByCid('c15');
-            //this.model.remove(this.model.last());
+			//删除操作
+			//this.model.getByCid('c15');
+			//this.model.remove(this.model.last());
 		},
 		InitModel2: function() {
 			this.model.reset([
@@ -148,8 +150,15 @@ define('jobs/menu', function(require, exports, module) {
 			}]);
 			this.renderAll();
 		},
+        getPreviewVal:function(){
+           return _.template(previewTpl,{html:this.options.renderView.getHtml()}); 
+        },
 		preview: function() {
-
+			var winname = window.open('', "_blank", '');
+			winname.document.open('text/html', 'replace');
+			winname.opener = null; //防止代码对本页面做修改
+			winname.document.write(this.getPreviewVal());
+			winname.document.close();
 		},
 		initialize: function() {
 

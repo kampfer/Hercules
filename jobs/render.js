@@ -39,12 +39,16 @@ define('jobs/render', function(require, exports, module) {
 			}
 			return ret;
 		},
-		render: function() {
+        getHtml:function(){
 			var html = this.recursionModel(this.model);
+            return html;
+        },
+		render: function() {
+            var html = this.getHtml();
 			$(this.el).html(html);
 		},
 		addOne: function(model,collection) {
-			var html = this.createRow(collection.last());
+			var html = this.createRow(collection.first());
 			$(this.el).prepend(html);
 		},
         removeOne:function(model,collection,options){
