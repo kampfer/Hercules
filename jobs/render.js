@@ -16,7 +16,7 @@ define('jobs/render', function(require, exports, module) {
 			}
 			function recursion(children) {
 				for (var k = 0; k < children.length; k++) {
-                    ret += '<div class="span'+children[k].get("col")+'" data-col="'+children[k].get("col")+'" node-type="col">'+
+                    ret += '<div data-id="'+children[k].cid+'" class="span'+children[k].get("col")+'" data-col="'+children[k].get("col")+'" node-type="col">'+
                            '<div class="box" node-type="box">'+
                            '<div class="item-box" node-type="content" data-type="'+children[k].get("type")+'">';
 					if (children[k].get('children')) {

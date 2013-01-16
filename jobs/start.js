@@ -16,7 +16,6 @@ define('jobs/start',function(require,exports,module){
             'click [action-type=preview]':'preview'
         },
         addNew:function(){
-            console.log('addNew');
         },
         InitModel1:function(){
             var Model1 = new Collection.row(); 
