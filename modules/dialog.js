@@ -19,7 +19,7 @@ define('modules/dialog',function(require, exports, module) {
 
         attrs: {
             // 模板
-            template: require('modules/dialog.tpl'),
+            template: require('modules/dialog-tpl'),
 
             // 对话框触发点
             trigger: {

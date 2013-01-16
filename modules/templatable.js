@@ -1,4 +1,4 @@
-define('modules/template',function(require, exports, module) {
+define('modules/templatable',function(require, exports, module) {
 
   var $ = require('$')
   var Handlebars = require('handlebars')

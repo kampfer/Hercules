@@ -3,6 +3,7 @@ define('jobs/start',function(require,exports,module){
     var backbone = require('backbone'),
         $ = require('$'),
         Collection = require('class/hercules-collection'),
+        blocks = require('jobs/blocks'),
         Model = require('class/hercules-model'),
         ViewRender = require('jobs/render');
 
@@ -16,6 +17,7 @@ define('jobs/start',function(require,exports,module){
             'click [action-type=preview]':'preview'
         },
         addNew:function(){
+            blocks.show();
         },
         InitModel1:function(){
             var Model1 = new Collection.row(); 
