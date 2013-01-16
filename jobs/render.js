@@ -23,6 +23,7 @@ define('jobs/render', function(require, exports, module) {
                         ret += '<div class="row-fluid" node-type="row">';
 						recursion(children[k].get('children'));
                         ret += '</div>';
+                        ret += '<div class="drag-bar" action-type="drag"><i class="icon-move"></i></div>';
 					}else{
                         ret += children[k].get('html');
                         ret += '<div class="drag-bar" action-type="drag"><i class="icon-move"></i></div>';

@@ -7,6 +7,8 @@ define('jobs/start',function(require,exports,module){
         Model = require('class/hercules-model'),
         ViewRender = require('jobs/render');
 
+    var HerculesModel = new Collection.row(); 
+
     var mianMenu = backbone.View.extend({
         el:'[node-type=menu]',
         events:{
@@ -19,9 +21,14 @@ define('jobs/start',function(require,exports,module){
         addNew:function(){
             blocks.show();
         },
+        renderAll:function(){
+            var View = new ViewRender({
+                model:HerculesModel
+            });
+            View.render();
+        },
         InitModel1:function(){
-            var Model1 = new Collection.row(); 
-            Model1.add([
+            HerculesModel.reset([
                 //一行的数据
                 {
                     col:12,
@@ -48,14 +55,10 @@ define('jobs/start',function(require,exports,module){
                     ]
                 }     
             ]);
-            var View = new ViewRender({
-                model:Model1
-            });
-            View.render();
+            this.renderAll();
         },
         InitModel2:function(){
-            var Model1 = new Collection.row(); 
-            Model1.add([
+            HerculesModel.reset([
                 //一行的数据
                 {
                     col:12,
@@ -72,14 +75,10 @@ define('jobs/start',function(require,exports,module){
                     ]
                 }    
             ]);
-            var View = new ViewRender({
-                model:Model1
-            });
-            View.render();
+            this.renderAll();
         },
         InitModel3:function(){
-            var Model1 = new Collection.row(); 
-            Model1.add([
+            HerculesModel.reset([
                 //一行的数据
                 {
                     col:12,
@@ -127,13 +126,10 @@ define('jobs/start',function(require,exports,module){
                     ]
                 }     
             ]);
-            var View = new ViewRender({
-                model:Model1
-            });
-            View.render();
+            this.renderAll();
         },
         preview:function(){
-        
+                
         },
         initialize:function(){
         
@@ -141,5 +137,4 @@ define('jobs/start',function(require,exports,module){
     });
     //创建导航
     var menu = new mianMenu();
-
 });

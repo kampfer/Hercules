@@ -27,9 +27,10 @@ define('class/hercules-model', function(require, exports, module) {
         defaults:{
             type:'mixed',
             col:12,
-            row:[]
+            children:[]
         },
         initialize:function(){
+
         }
     });
     //行类型
