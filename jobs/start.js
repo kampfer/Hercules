@@ -84,7 +84,19 @@ define('jobs/start',function(require,exports,module){
                     col:12,
                     children:[
                         new Model.text({col:3}),
-                        new Model.mixed({col:9,row:[new Model.text({col:2}),new Model.image({col:10})]})
+                        new Model.mixed({
+                            col:9,
+                            row:[
+                                new Model.mixed({
+                                    col:2,
+                                    row:[
+                                        new Model.text({col:3}),
+                                        new Model.image({col:9})
+                                    ]
+                                }),
+                                new Model.image({col:10})
+                            ]
+                        })
                     ]
                 },     
                 {
