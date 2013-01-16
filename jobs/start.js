@@ -17,16 +17,9 @@ define('jobs/start', function(require, exports, module) {
 	var renderView = new Render({
 		model: HerculesModel
 	});
+
+    HerculesModel.initListenTo(renderView);
     
-
-	HerculesModel.on('add', function(row) {
-		console.log(row);
-	});
-
-	HerculesModel.on('remove', function(row) {
-		console.log(row);
-	});
-
 	//创建导航
 	var menu = new Menu({
         model:HerculesModel,
