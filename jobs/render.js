@@ -33,9 +33,7 @@ define('jobs/render', function(require, exports, module) {
 		recursionModel: function(model) {
 			var ret = '';
 			for (var i = 0; i < model.length; i++) {
-				ret += '<div class="row-fluid" node-type="row">';
 				ret += this.createRow(model.models[i]);
-				ret += '</div>';
 			}
 			return ret;
 		},
