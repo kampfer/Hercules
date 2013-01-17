@@ -21,11 +21,11 @@ define('jobs/blocks', function(require, exports, module) {
             'click [action-type=image]':'addImage'
         },
         addText:function(){
-            this.model.add({children:[new model.text()]});
+            this.model.add({children:[new model.text()]},{at:0});
             this.hide();
         },
         addImage:function(){
-            this.model.add({children:[new model.image()]});
+            this.model.add({children:[new model.image()]},{at:0});
             this.hide();
         },
         show:function(){
