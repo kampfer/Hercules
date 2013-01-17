@@ -1,4 +1,4 @@
 define('app',function(require,exports,module){
     var start = require('jobs/start');
-    require('jobs/row');
+    require('jobs/document');
 });

@@ -1,86 +1,55 @@
 define('jobs/row', function(require, exports, module) {
-    var backbone = require('modules/backbone');
+    var View = require('jobs/view');
     require('modules/jquery-1.8.2.min');
     require('modules/jquery-ui.min');
 
-    var Row = backbone.View.extend({
+    var Row = View.extend({
         initialize : function() {
-            this.columns = [];
-            this.columnMap = {};
-            this.span = [];
-            this.id = this.$el.attr('id');
-            this.render();
-        },
+            Row.__super__.initialize.apply(this, arguments);
 
-        render : function() {
+            var $el = this.$el,
+                that = this;
+
             this.$el.droppable({
-                out : function() {
-                    console.log('out');
+                drop : function(event, ui) {
+                    var id = ui.draggable.attr('id'),
+                        column = that.ownerDocument.getChild(id);
+                    ui.draggable.removeAttr('style');
+                    ui.draggable.appendTo($el);
+                    that.addChild(column);
+                    that.averageSpan();
                 },
-                over : function(event, ui) {
-                }
+                tolerance : 'pointer'
             });
         },
 
-        addColumn : function(column) {
-            this.columns.push(column);
-            this.span.push(column.spanNum);
-            this.columnMap[column.id] = this.columns.length - 1;
-            column.row = this;
+        getColumnIndex : function(column) {
+            var id = typeof column === 'string' ? column : column.getId();
+            var index = this.childrenMap[id];
+            
+            return index;
         },
 
-        updateColumn : function(columnId, spanNum) {
-            var columnIndex = this.columnMap[columnId],
-                column = this.columns[columnIndex],
-                spanOffset = spanNum - this.span[columnIndex];
+        averageSpan : function() {
+            var span = 12 / this.children.length;
+            for(var i = 0, child; child = this.children[i]; i++) {
+                child.setSpan(span);
+            }
+        },
 
-            var nextColumn;
-            for(var i = columnIndex + 1; i < this.columns.length; i++) {
-                if( (spanOffset > 0 && this.columns[i].spanNum > 1) ||
-                    (spanOffset < 0 && this.columns[i].spanNum < 12) ) {
-                    nextColumn = this.columns[i];
-                    this.span[i] -= spanOffset;
-                    nextColumn.changeSpanNum(this.span[i]);
-                    break;
+        updateNextVariableColumn : function(column, offset) {
+            var index = this.getColumnIndex(column), nextColumn;
+
+            for(var i = index + 1; i < this.children.length; i++) {
+                if( (offset > 0 && this.children[i].spanNum > 1) ||
+                    (offset < 0 && this.children[i].spanNum < 12) ) {
+                    nextColumn = this.children[i];
+                    nextColumn.setSpan(nextColumn.spanNum - offset);
+                    return true;
                 }
             }
-
-            if(nextColumn) {
-                this.span[columnIndex] = spanNum;
-                column.changeSpanNum(spanNum);
-            }
-            console.log(this.span);
         }
     });
 
     module.exports = Row;
-
-    var Column = require('jobs/column');
-    var row = new Row({
-        el : $('#test-row')
-    });
-    var column = new Column({
-        el : $('#test')
-    });
-    var column2 = new Column({
-        el : $('#test2')
-    });
-    row.addColumn(column);
-    row.addColumn(column2);
-
-    var row2 = new Row({
-        el : $('#test-row2')
-    });
-    var column3 = new Column({
-        el : $('#test3')
-    });
-    var column4 = new Column({
-        el : $('#test4')
-    });
-    var column5 = new Column({
-        el : $('#test5')
-    });
-    row2.addColumn(column3);
-    row2.addColumn(column4);
-    row2.addColumn(column5);
 });
