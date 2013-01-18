@@ -13,7 +13,7 @@ define('class/hercules-model', function(require, exports, module) {
 	var imageModel = backbone.Model.extend({
         defaults:{
             type:'image',
-            src:'http://twitter.github.com/bootstrap/assets/img/bs-docs-responsive-illustrations.png',
+            src:'http://ww4.sinaimg.cn/mw690/6998369cgw1e0tg5bq05ij.jpg',
             col:12
         },
         initialize:function(){
