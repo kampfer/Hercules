@@ -14,20 +14,23 @@ define('jobs/row', function(require, exports, module) {
                 drop : function(event, ui) {
                     var id = ui.draggable.attr('id'),
                         column = that.ownerDocument.getChild(id);
+
+                    var index = that.findSpanIndexByOffsetLeft(ui.offset.left);
+
+                    if(that.children[index].$el[0] === ui.draggable[0]) {
+                        return;
+                    }
+
+                    ui.draggable.insertAfter(that.children[index].$el);
                     ui.draggable.removeAttr('style');
-                    ui.draggable.appendTo($el);
-                    that.addChild(column);
-                    that.averageSpan();
+
+                    //index ++;
+
+                    column.getParent().removeChild(column);
+                    that.addChild(column, index);
                 },
                 tolerance : 'pointer'
             });
-        },
-
-        getColumnIndex : function(column) {
-            var id = typeof column === 'string' ? column : column.getId();
-            var index = this.childrenMap[id];
-            
-            return index;
         },
 
         averageSpan : function() {
@@ -38,7 +41,7 @@ define('jobs/row', function(require, exports, module) {
         },
 
         updateNextVariableColumn : function(column, offset) {
-            var index = this.getColumnIndex(column), nextColumn;
+            var index = column.getIndex(), nextColumn;
 
             for(var i = index + 1; i < this.children.length; i++) {
                 if( (offset > 0 && this.children[i].spanNum > 1) ||
@@ -48,6 +51,27 @@ define('jobs/row', function(require, exports, module) {
                     return true;
                 }
             }
+        },
+
+        //取得左边距小于offsetLeft,且值最接近offsetLeft的column
+        findSpanIndexByOffsetLeft : function(offsetLeft) {
+            var left = 0;
+            for(var i = 0, child; child = this.children[i]; i++) {
+                left += child.spanNum * child.spanWidth;
+                if(left > offsetLeft) {
+                    return i;
+                }
+            }
+        },
+
+        removeChild : function() {
+            Row.__super__.removeChild.apply(this, arguments);
+            this.averageSpan();
+        },
+
+        addChild : function() {
+            Row.__super__.addChild.apply(this, arguments);
+            this.averageSpan();
         }
     });
 

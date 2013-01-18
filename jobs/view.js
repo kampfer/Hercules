@@ -1,103 +1,135 @@
 define('jobs/view', function(require, exports, module) {
-	var backbone = require('modules/backbone'); 
+    var backbone = require('modules/backbone'); 
 
-	var View = backbone.View.extend({
-		initialize : function() {
-			//this.listenTo(this.model, "change", this.render);
-			this.children = [];
-			this.childrenMap = {};
-			this.parent = null;
-			this.id = this.$el.attr('id');
-		},
+    var View = backbone.View.extend({
+        initialize : function() {
+            //this.listenTo(this.model, "change", this.render);
+            this.children = [];
+            //this.childrenMap = {};
+            this.parent = null;
+            this.id = this.$el.attr('id');
+        },
 
-		setId : function(id) {
-			var oldId = this.id;
-		
-			this.id = id;
-			
-			if(this.parent && this.parent.children) {
-				delete parent.children[oldId];
-				this.parent.addChild(this);
-			}
-		},
+        setId : function(id) {
+            var oldId = this.id;
+        
+            this.id = id;
+            
+            if(this.parent && this.parent.children) {
+                delete parent.children[oldId];
+                this.parent.addChild(this);
+            }
+        },
 
-		getId : function() {
-			return this.id;
-		},
+        getId : function() {
+            return this.id;
+        },
 
-		addChild : function(child) {
-			if(child instanceof View) {
-				var id = child.getId();
+        addChild : function(child, index) {
+            if(child instanceof View) {
+                var id = child.getId();
 
-				if(this.childrenMap[id] === undefined) {
-					this.childrenMap[id] = this.children.length;
-					this.children.push(child);
-				}
+                //if(this.childrenMap[id] === undefined) {
+                if( !this.getChild(id) ) {
+                    if(index !== undefined) {
+                        //this.childrenMap[id] = index;
+                        this.children.splice(index, 0, child);
+                    } else {
+                        //this.childrenMap[id] = this.children.length;
+                        this.children.push(child);
+                    }
+                }
 
-				if(child.getParent() !== this) {
-					child.setParent(this);
-				}
+                if(child.getParent() !== this) {
+                    child.setParent(this);
+                }
 
-				child.ownerDocument = this.ownerDocument;
-			}
-		},
+                child.ownerDocument = this.ownerDocument;
+            }
+        },
 
-		getChild : function(id) {
-			if(typeof id === 'string') {
-				var child;
+        getChild : function(id) {
+            if(typeof id === 'string') {
+                var child;
 
-				this.traverse(this, function(node) {
-					if(node.getId() === id) {
-						child = node;
-						return false;
-					}
-				});
+                this.traverse(this, function(node) {
+                    if(node.getId() === id) {
+                        child = node;
+                        return false;
+                    }
+                });
 
-				if(child) {
-					return child;
-				}
-			}
-		},
+                if(child) {
+                    return child;
+                }
+            }
+        },
 
-		setParent : function(parent) {
-			if(parent instanceof View) {
-				if(parent === this) {
-					return;
-				}
+        getIndex : function() {
+            if(this.parent) {
+                for(var i = 0, child; child = this.parent.children[i]; i++) {
+                    if(child.id === this.id) {
+                        return i;
+                    }
+                }
+            }
+        },
 
-				this.parent = parent;
+        removeChild : function(child) {
+            var id;
+            if(child instanceof View) {
+                id = child.getId();
+            } else if(typeof child === 'string') {
+                id = child;
+            } else {
+                return;
+            }
 
-				if( !this.parent.getChild(this.id) ) {
-					this.parent.addChild(this);
-				}
-			}
-		},
+            var index = child.getIndex();
+            if(index !== undefined) {
+                child.setParent(null);
+                this.children.splice(index, 1);
+            }
+        },
 
-		getParent : function() {
-			return this.parent;
-		},
+        setParent : function(parent) {
+            if(parent === this) {
+                return;
+            }
 
-		traverse : function(view, callback) {
-			if( !(view instanceof View) ) {
-				return;
-			}
+            this.parent = parent;
 
-			if( callback.call(this, view) === false ) {
-				return;
-			}
+            //setParent(null)所以这里需要判断空值
+            if( this.parent && !this.parent.getChild(this.id) ) {
+                this.parent.addChild(this);
+            }
+        },
 
-			if(view.children) {
-				for(var i = 0, child; child = view.children[i]; i++) {
-					this.traverse(child, callback);
-				}
-			}
-		},
+        getParent : function() {
+            return this.parent;
+        },
 
-		dispose : function() {
-			delete this.children;
-			delete this.parent;
-		}
-	});
+        traverse : function(view, callback) {
+            if( !(view instanceof View) ) {
+                return;
+            }
 
-	module.exports = View;
+            if( callback.call(this, view) === false ) {
+                return;
+            }
+
+            if(view.children) {
+                for(var i = 0, child; child = view.children[i]; i++) {
+                    this.traverse(child, callback);
+                }
+            }
+        },
+
+        dispose : function() {
+            delete this.children;
+            delete this.parent;
+        }
+    });
+
+    module.exports = View;
 });

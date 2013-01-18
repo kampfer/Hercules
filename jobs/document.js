@@ -48,6 +48,4 @@ define('jobs/document', function(require, exports, module) {
     });
 	document.addChild(row);
 	document.addChild(row2);
-
-	console.log(document);
 });
