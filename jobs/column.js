@@ -6,6 +6,11 @@ define('jobs/column', function(require, exports, module) {
         View = require('jobs/view');
 
     Column = View.extend({
+        events:{
+            'mouseenter':'showDragBar',
+            'mouseleave':'hideDragBar'
+        },
+        
         initialize : function() {
             Column.__super__.initialize.apply(this, arguments);
 
@@ -14,6 +19,8 @@ define('jobs/column', function(require, exports, module) {
 
             this.spanNum = +($el.attr('col'));
             this.spanWidth = $el.width() / this.spanNum;
+
+            $('<div class="drag-bar"><i class="icon-move"></i></div>').appendTo($el);
 
             $el.resizable({
                 resize : function() {
@@ -38,6 +45,7 @@ define('jobs/column', function(require, exports, module) {
             $el.draggable({
                 'zIndex' : 10000,
                 scroll : false,
+                handle : '.drag-bar',
                 //containment : '.container',
                 start : function() {},
                 stop : function() {
@@ -57,6 +65,14 @@ define('jobs/column', function(require, exports, module) {
 
         getOffset : function() {
             return this.$el.offset();
+        },
+
+        hideDragBar : function() {
+            this.$el.find('.drag-bar').hide();
+        },
+
+        showDragBar : function() {
+            this.$el.find('.drag-bar').show();
         }
     });
 
