@@ -110,6 +110,7 @@ define('jobs/render', function(require, exports, module) {
 			var html = this.getHtml();
 			$(this.el).html(html);
 			this.batchDoc();
+            /*
             this.updateRowByCid('c18',
 			{
 				col: 12,
@@ -122,6 +123,7 @@ define('jobs/render', function(require, exports, module) {
 					col: 4
 				})]
 			});
+            */
 		},
         //更新方法
         updateRowByCid:function(rootRowcid,value){
@@ -191,7 +193,7 @@ define('jobs/render', function(require, exports, module) {
 			var mydoc = new $doc({
 				el: $(this.el),
                 model:this.model,
-                updateRowByCid:this.updateRowByCid //把更新方法给$doc做改变ui时更新数据用
+                updateRowByCid:this.updateRowByCid //把更新方法给$doc做改变ui时更新数据用,用法见113行
 			});
 			rows.each(function(index, rowitem) {
 				var row = new $row({
