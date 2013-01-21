@@ -14,7 +14,7 @@ define('jobs/document', function(require, exports, module) {
 	});
 
 	module.exports = Document;
-    /*
+
     var row = new Row({
         el : $('#test-row')
     });
@@ -50,5 +50,4 @@ define('jobs/document', function(require, exports, module) {
 	document.addChild(row2);
 
 	console.log(document);
-    */
 });
