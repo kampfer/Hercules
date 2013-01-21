@@ -1,6 +1,8 @@
 define('jobs/render', function(require, exports, module) {
 	var $ = require('$'),
 	backbone = require('backbone'),
+    rowCollection = require('class/hercules-collection').row,
+    Model = require('class/hercules-model'),
 	_ = require('underscore');
 
 	require('modules/jquery-ui.min');
@@ -108,52 +110,29 @@ define('jobs/render', function(require, exports, module) {
 			var html = this.getHtml();
 			$(this.el).html(html);
 			this.batchDoc();
-		},
-		addOne: function(model, collection) {
-			var html = $(this.createRow(collection.first()));
-			$(this.el).prepend(html);
-			this.batchDoc();
-		},
-		clearDZP: function(els, method) {
-			els.each(function(index, item) {
-				if ($.isFunction(item[method])) item[method]("destroy");
+            this.updateRowByCid('c18',
+			{
+				col: 12,
+				children: [
+				new Model.text({
+					col: 4
+				}), new Model.text({
+					col: 4
+				}), new Model.text({
+					col: 4
+				})]
 			});
 		},
-		batchDoc: function() {
-			var $doc = this.options.$doc,
-			$row = this.options.$row,
-			$col = this.options.$col;
-			//全部删除
-			var cols = $(this.el).find(DOMS.col);
-			var rows = $(this.el).find(DOMS.row);
-			this.clearDZP(cols, 'draggable');
-			this.clearDZP(cols, 'resizable');
-			this.clearDZP(rows, 'droppable');
-			//全部再绑定一次
-			var mydoc = new $doc({
-				el: $(this.el)
-			});
-			rows.each(function(index, rowitem) {
-				var row = new $row({
-					el: $(rowitem)
-				});
-				$(rowitem).find(DOMS.col).each(function(index, colitem) {
-					row.addChild(new $col({
-						el: $(colitem)
-					}));
-				});
-				mydoc.addChild(row);
-			});
-			//console.log(mydoc);
-		},
-		trash: function(e) {
+        //更新方法
+        updateRowByCid:function(rootRowcid,value){
+            var row = this.model.find(function(item){
+                return item.cid == rootRowcid;
+            });
+            row.set(value);
+        },
+		removeByCid: function(rowcid, colcid) {
 			var self = this,
-			target = $(e.currentTarget),
-			rowTarget = target.closest(DOMS.row),
-			colTarget = target.closest(DOMS.col),
-			rowcid = rowTarget.attr('data-id'),
-			colcid = colTarget.attr('data-id');
-			var rowModel = this.model.getRowModel(rowcid)['current'],
+			rowModel = this.model.getRowModel(rowcid)['current'],
 			children = rowModel.get('children');
 			if (children.length) {
 				var index = this.model.findColModelIndex(children, colcid);
@@ -186,9 +165,61 @@ define('jobs/render', function(require, exports, module) {
 					clearParentChildren(cid);
 				}
 			}
+
+		},
+		addOne: function(model, collection) {
+			var html = $(this.createRow(collection.first()));
+			$(this.el).prepend(html);
+			this.batchDoc();
+		},
+		clearDZP: function(els, method) {
+			els.each(function(index, item) {
+				if ($.isFunction(item[method])) item[method]("destroy");
+			});
+		},
+		batchDoc: function() {
+			var $doc = this.options.$doc,
+			$row = this.options.$row,
+			$col = this.options.$col;
+			//全部删除
+			var cols = $(this.el).find(DOMS.col);
+			var rows = $(this.el).find(DOMS.row);
+			this.clearDZP(cols, 'draggable');
+			this.clearDZP(cols, 'resizable');
+			this.clearDZP(rows, 'droppable');
+			//全部再绑定一次
+			var mydoc = new $doc({
+				el: $(this.el),
+                model:this.model,
+                updateRowByCid:this.updateRowByCid //把更新方法给$doc做改变ui时更新数据用
+			});
+			rows.each(function(index, rowitem) {
+				var row = new $row({
+					el: $(rowitem)
+				});
+				$(rowitem).find(DOMS.col).each(function(index, colitem) {
+					row.addChild(new $col({
+						el: $(colitem)
+					}));
+				});
+				mydoc.addChild(row);
+			});
+			//console.log(mydoc);
+		},
+		trash: function(e) {
+			var self = this,
+			target = $(e.currentTarget),
+			rowTarget = target.closest(DOMS.row),
+			colTarget = target.closest(DOMS.col),
+			rowcid = rowTarget.attr('data-id'),
+			colcid = colTarget.attr('data-id');
+			this.removeByCid(rowcid, colcid);
 		},
 		removeOne: function(cid) {
 			var target = $('[data-id=' + cid + ']');
+			this.clearDZP(target, 'draggable');
+			this.clearDZP(target, 'resizable');
+			this.clearDZP(target, 'droppable');
 			target.remove();
 		}
 	});
