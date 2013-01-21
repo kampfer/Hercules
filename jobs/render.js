@@ -109,12 +109,12 @@ define('jobs/render', function(require, exports, module) {
 		render: function() {
 			var html = this.getHtml();
 			$(this.el).html(html);
-			//this.batchDoc();
+			this.batchDoc();
 		},
 		addOne: function(model, collection) {
 			var html = $(this.createRow(collection.first()));
 			$(this.el).prepend(html);
-			//this.batchDoc();
+			this.batchDoc();
 		},
 		clearDZP: function(els, method) {
 			els.each(function(index, item) {
