@@ -84,10 +84,8 @@ define('jobs/render', function(require, exports, module) {
 						ret += '<div class="row-fluid" node-type="row" data-id="' + children[k].cid + '">';
 						recursion(children[k].get('children'));
 						ret += '</div>';
-						ret += '<div class="drag-bar" action-type="drag"><i class="icon-move"></i></div>';
 					} else {
 						ret += children[k].get('html');
-						ret += '<div class="drag-bar" action-type="drag"><i class="icon-move"></i></div>';
 					}
 					ret += '</div></div></div>';
 				}

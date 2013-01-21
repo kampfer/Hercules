@@ -8,7 +8,7 @@
     margin:5px;
     position:relative;
 }
-.container .item-box .drag-bar{
+.container .drag-bar{
     position:absolute;
     top:1px;
     right:1px;
