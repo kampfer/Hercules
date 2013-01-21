@@ -128,7 +128,7 @@ define('jobs/render', function(require, exports, module) {
             var row = this.model.find(function(item){
                 return item.cid == rootRowcid;
             });
-            row.set(value);
+            if(row) row.set(value);
         },
 		removeByCid: function(rowcid, colcid) {
 			var self = this,

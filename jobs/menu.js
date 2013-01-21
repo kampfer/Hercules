@@ -3,6 +3,8 @@ define('jobs/menu', function(require, exports, module) {
 	var backbone = require('backbone'),
     _ = require('underscore'),
     previewTpl = require('jobs/previewTpl'),
+    Blocks = require('blocks/blocks'),
+    myBlocks,
 	Model = require('class/hercules-model');
 
 	var mianMenu = backbone.View.extend({
@@ -15,7 +17,12 @@ define('jobs/menu', function(require, exports, module) {
 			'click [action-type=preview]': 'preview'
 		},
 		addNew: function() {
-			this.options.blocksView.show();
+            if(!myBlocks){
+                myBlocks = new Blocks({
+                    model:this.model
+                });
+            }
+			myBlocks.show();
 		},
 		renderAll: function() {
 			this.options.renderView.render();
