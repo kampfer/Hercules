@@ -20,7 +20,7 @@ define('jobs/column', function(require, exports, module) {
             this.spanNum = +($el.attr('data-col'));
             this.spanWidth = $el.width() / this.spanNum;
 
-            $('<div class="drag-bar"><i class="icon-move"></i></div>').appendTo($el);
+            $('<div class="drag-bar" style="display:none;"><i class="icon-move"></i></div>').appendTo($el);
 
             $el.resizable({
                 resize : function() {
