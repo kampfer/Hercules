@@ -8,13 +8,13 @@ define('jobs/document', function(require, exports, module) {
 			Document.__super__.initialize.apply(this, arguments);
 			this.ownerDocument = this;
 		},
+		'export' : function() {
 
-		export : function() {
 		}
 	});
 
 	module.exports = Document;
-
+    /*
     var row = new Row({
         el : $('#test-row')
     });
@@ -50,4 +50,5 @@ define('jobs/document', function(require, exports, module) {
 	document.addChild(row2);
 
 	console.log(document);
+    */
 });

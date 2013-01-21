@@ -2,7 +2,7 @@ define('jobs/column', function(require, exports, module) {
 	require('modules/jquery-1.8.2.min');
 	require('modules/jquery-ui.min');
 
-	var spanWidth, Column
+	var spanWidth, Column,
 		View = require('jobs/view');
 
 	Column = View.extend({
@@ -12,7 +12,7 @@ define('jobs/column', function(require, exports, module) {
 			var $el = this.$el,
 				that = this;
 
-			this.spanNum = +($el.attr('col'));
+			this.spanNum = +($el.attr('data-col'));
 			this.spanWidth = $el.width() / this.spanNum;
 
 			$el.resizable({

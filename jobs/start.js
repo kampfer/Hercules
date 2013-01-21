@@ -4,17 +4,23 @@ define('jobs/start', function(require, exports, module) {
 	$ = require('$'),
 	Model = require('class/hercules-model'),
 	Collection = require('class/hercules-collection'),
+    Doc = require('jobs/document'),
+    row = require('jobs/row'),
+    col = require('jobs/column'),
 	blocks = require('jobs/blocks'),
     Menu = require('jobs/menu'),
 	Render = require('jobs/render');
 
 	var HerculesModel = new Collection.row();
-
+    
 	var blocksView = new blocks({
 		model: HerculesModel
 	});
 
 	var renderView = new Render({
+        $doc:Doc,
+        $row:row,
+        $col:col,
 		model: HerculesModel
 	});
 

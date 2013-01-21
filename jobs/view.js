@@ -7,7 +7,7 @@ define('jobs/view', function(require, exports, module) {
 			this.children = [];
 			this.childrenMap = {};
 			this.parent = null;
-			this.id = this.$el.attr('id');
+			this.id = this.$el.attr('data-id');
 		},
 
 		setId : function(id) {

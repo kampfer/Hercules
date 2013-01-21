@@ -57,9 +57,6 @@ define('jobs/menu', function(require, exports, module) {
 				})]
 			}]);
 			this.renderAll();
-			//删除操作
-			//this.model.getByCid('c15');
-			//this.model.remove(this.model.last());
 		},
 		InitModel2: function() {
 			this.model.reset([

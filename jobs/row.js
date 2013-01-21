@@ -12,7 +12,7 @@ define('jobs/row', function(require, exports, module) {
 
             this.$el.droppable({
                 drop : function(event, ui) {
-                    var id = ui.draggable.attr('id'),
+                    var id = ui.draggable.attr('data-id'),
                         column = that.ownerDocument.getChild(id);
                     ui.draggable.removeAttr('style');
                     ui.draggable.appendTo($el);
@@ -48,6 +48,7 @@ define('jobs/row', function(require, exports, module) {
                     return true;
                 }
             }
+            return false;
         }
     });
 
