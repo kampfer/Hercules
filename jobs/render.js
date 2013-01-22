@@ -15,6 +15,8 @@ define('jobs/render', function(require, exports, module) {
 		editbox: 'div[node-type=edit-box]'
 	};
 
+	var mydoc;
+
 	//预览或者初始化渲染用view
 	var ViewRender = backbone.View.extend({
 		el: 'div[node-type=main]',
@@ -22,7 +24,13 @@ define('jobs/render', function(require, exports, module) {
 			'mouseenter div[node-type=content]': 'enterBox',
 			'mouseleave div[node-type=content]': 'leaveBox',
 			'mouseleave div[node-type=edit-box]': 'leaveEditBox',
-			'click [action-type=trash]': 'trash'
+			'click [action-type=bold]': 'bold',
+			'click [action-type=italic]': 'italic',
+			'click [action-type=tag]': 'tag',
+			'click [action-type=alignLeft]': 'alignLeft',
+			'click [action-type=alignCenter]': 'alignCenter',
+			'click [action-type=alignRight]': 'alignRight',
+			'click [action-type=trash]': 'trash'			
 		},
 		enterBox: function(e) {
 			var item = $(e.currentTarget),
@@ -47,12 +55,12 @@ define('jobs/render', function(require, exports, module) {
 		},
 		createNav: function(type) {
 			var navs = {
-				'text': '<li><a href="#"><i class="icon-bold"></i></a></li>\
-                       <li><a href="#"><i class="icon-italic"></i></a></li>\
-                       <li><a href="#"><i class="icon-tag"></i></a></li>\
-                       <li><a href="#"><i class="icon-align-left"></i></a></li>\
-                       <li><a href="#"><i class="icon-align-center"></i></a></li>\
-                       <li><a href="#"><i class="icon-align-right"></i></a></li>\
+				'text': '<li><a href="#"><i class="icon-bold" action-type="bold"></i></a></li>\
+                       <li><a href="#"><i class="icon-italic" action-type="italic"></i></a></li>\
+                       <li><a href="#"><i class="icon-tag" action-type="tag"></i></a></li>\
+                       <li><a href="#"><i class="icon-align-left" action-type="alignLeft"></i></a></li>\
+                       <li><a href="#"><i class="icon-align-center" action-type="alignCenter"></i></a></li>\
+                       <li><a href="#"><i class="icon-align-right" action-type="alignRight"></i></a></li>\
                        <li><a href="#"><i class="icon-trash" action-type="trash"></i></a></li>',
 				'image': '<li><a href="#"><i class="icon-align-left"></i></a></li>\
                        <li><a href="#"><i class="icon-align-center"></i></a></li>\
@@ -183,7 +191,7 @@ define('jobs/render', function(require, exports, module) {
 			this.clearDZP(cols, 'resizable');
 			this.clearDZP(rows, 'droppable');
 			//全部再绑定一次
-			var mydoc = new $doc({
+			mydoc = new $doc({
 				el: $(this.el),
 				model: this.model,
 				updateRowByCid: this.updateRowByCid //把更新方法给$doc做改变ui时更新数据用,用法见113行
@@ -220,6 +228,63 @@ define('jobs/render', function(require, exports, module) {
 			this.clearDZP(target, 'resizable');
 			this.clearDZP(target, 'droppable');
 			target.remove();
+		},
+		getSelectedText : function() {
+			var selectedText;
+			//ff、chrome，用getSelection
+			if(window.getSelection) {
+				selectedText=window.getSelection();
+			}
+			//ie利用Range
+			else if(document.selection) {
+				selectedText=document.selection.createRange().text;
+			}
+		},
+		bold : function(e) {
+			var selectedText = this.getSelectedText(),
+				$target = $(e.currentTarget),
+				id = $target.closest(DOMS.col).attr('data-id');
+			var node = mydoc.getChild(id).getElement().find('[node-type=content]');
+			if(selectedText) {
+				var reg = new RegExp(selectedText);
+				node.innerHTML.replace(reg, '<b>' + selectedText + '</b>');
+			} else {
+				node.innerHTML = '<b>' + node.innerHTML + '</b>';
+			}
+		},
+		italic : function() {
+			var selectedText = this.getSelectedText(),
+				$target = $(e.currentTarget),
+				id = $target.closest(DOMS.col).attr('data-id');
+			var node = mydoc.getChild(id).getElement().find('[node-type=content]');
+			if(selectedText) {
+				var reg = new RegExp(selectedText);
+				node.innerHTML.replace(reg, '<i>' + selectedText + '</i>');
+			} else {
+				node.innerHTML = '<i>' + node.innerHTML + '</i>';
+			}
+		},
+		tag : function() {},
+		alignLeft : function() {
+			var selectedText = this.getSelectedText(),
+				$target = $(e.currentTarget),
+				id = $target.closest(DOMS.col).attr('data-id');
+			var node = mydoc.getChild(id).getElement().find('[node-type=content]');
+			node.style.align = 'left';
+		},
+		alignRight : function() {
+			var selectedText = this.getSelectedText(),
+				$target = $(e.currentTarget),
+				id = $target.closest(DOMS.col).attr('data-id');
+			var node = mydoc.getChild(id).getElement().find('[node-type=content]');
+			node.style.align = 'right';
+		},
+		alignCenter : function() {
+			var selectedText = this.getSelectedText(),
+				$target = $(e.currentTarget),
+				id = $target.closest(DOMS.col).attr('data-id');
+			var node = mydoc.getChild(id).getElement().find('[node-type=content]');
+			node.style.align = 'center';
 		}
 	});
 
