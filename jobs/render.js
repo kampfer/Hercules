@@ -36,7 +36,8 @@ define('jobs/render', function(require, exports, module) {
 			var item = $(e.currentTarget),
 			type = item.attr('data-type');
 			if (type !== 'mixed') {
-				item.closest(DOMS.box).append(this.createNav(type));
+				//item.closest(DOMS.box).append(this.createNav(type));
+				item.append(this.createNav(type));
 			}
 			return false;
 		},
@@ -247,19 +248,19 @@ define('jobs/render', function(require, exports, module) {
 		bold : function(e) {
 			var selectedText = this.getSelectedText(),
 				$target = $(e.currentTarget),
-				id = $target.closest(DOMS.col).attr('data-id');
-			var node = mydoc.getChild(id).getElement().find('[node-type=content]');
-			if(selectedText) {
-				var reg = new RegExp(selectedText);
-				node.innerHTML.replace(reg, '<b>' + selectedText + '</b>');
-			} else {
-				node.innerHTML = '<b>' + node.innerHTML + '</b>';
+				id = $target.closest('div[data-type]').attr('data-id');
+			var text = mydoc.getChild(id);
+			var reg;
+			if(!selectedText) {
+				selectedText = text.$el.text();
 			}
+			reg = new RegExp(selectedText);
+			text.$el[0].innerHTML = text.$el[0].innerHTML.replace(reg, '<b>' + selectedText + '</b>');
 		},
 		italic : function() {
 			var selectedText = this.getSelectedText(),
 				$target = $(e.currentTarget),
-				id = $target.closest(DOMS.col).attr('data-id');
+				id = $target.closest('div[data-type]').attr('data-id');
 			var node = mydoc.getChild(id).getElement().find('[node-type=content]');
 			if(selectedText) {
 				var reg = new RegExp(selectedText);
@@ -269,26 +270,26 @@ define('jobs/render', function(require, exports, module) {
 			}
 		},
 		tag : function() {},
-		alignLeft : function() {
+		alignLeft : function(e) {
 			var selectedText = this.getSelectedText(),
 				$target = $(e.currentTarget),
-				id = $target.closest(DOMS.col).attr('data-id');
-			var node = mydoc.getChild(id).getElement().find('[node-type=content]');
-			node.style.align = 'left';
+				id = $target.closest('div[data-type]').attr('data-id');
+			var node = mydoc.getChild(id).$el;
+			node.css('text-align', 'left');
 		},
-		alignRight : function() {
+		alignRight : function(e) {
 			var selectedText = this.getSelectedText(),
 				$target = $(e.currentTarget),
-				id = $target.closest(DOMS.col).attr('data-id');
-			var node = mydoc.getChild(id).getElement().find('[node-type=content]');
-			node.style.align = 'right';
+				id = $target.closest('div[data-type]').attr('data-id');
+			var node = mydoc.getChild(id).$el;
+			node.css('text-align', 'right');
 		},
-		alignCenter : function() {
+		alignCenter : function(e) {
 			var selectedText = this.getSelectedText(),
 				$target = $(e.currentTarget),
-				id = $target.closest(DOMS.col).attr('data-id');
-			var node = mydoc.getChild(id).getElement().find('[node-type=content]');
-			node.style.align = 'center';
+				id = $target.closest('div[data-type]').attr('data-id');
+			var node = mydoc.getChild(id).$el;
+			node.css('text-align', 'center');
 		}
 	});
 

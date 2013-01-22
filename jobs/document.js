@@ -55,7 +55,8 @@ define('jobs/document', function(require, exports, module) {
                 tagName : 'div',
                 className : 'span' + col,
                 attributes : {
-                    'data-col' : col
+                    'data-col' : col,
+                    'node-type' : 'box'
                 }
             });
         },
@@ -68,7 +69,11 @@ define('jobs/document', function(require, exports, module) {
 
             var text = new Text({
                 tagName : 'div',
-                className : 'text'
+                className : 'text',
+                attributes : {
+                    'data-type' : 'text',
+                    'node-type' : 'content'
+                }
             }, content);
 
             if(item) {
@@ -88,7 +93,10 @@ define('jobs/document', function(require, exports, module) {
 
             var image = new Image({
                 tagName : 'div',
-                className : 'image'
+                className : 'image',
+                attributes : {
+                    'data-type' : 'image'
+                }
             }, src);
 
             if(item) {

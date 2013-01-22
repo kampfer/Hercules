@@ -18,12 +18,16 @@ define('jobs/row', function(require, exports, module) {
                     var index = that.findSpanIndexByOffsetLeft(event.pageX);
                     console.log(index);
 
-                    if(column.getIndex() === index) {
+                    if(index === undefined || (column.getIndex() === index)) {
                         return;
                     }
-                    
+
                     if(index !== 0) {
-                        column.$el.insertAfter(that.children[index].$el);
+                        if(column.getParent() !== that) {
+                            column.$el.insertAfter(that.children[index - 1].$el);
+                        } else {
+                            column.$el.insertAfter(that.children[index].$el);
+                        }
                     } else {
                         column.$el.prependTo(that.$el);
                     }
@@ -31,9 +35,10 @@ define('jobs/row', function(require, exports, module) {
 
                     column.getParent().removeChild(column);
                     that.addChild(column, index);
+
                     console.log(that);
                 },
-                tolerance : 'pointer'
+                tolerance : 'intersect'
             });
         },
 
@@ -61,8 +66,12 @@ define('jobs/row', function(require, exports, module) {
         findSpanIndexByOffsetLeft : function(offsetLeft) {
             var left = 0, right = 0;
             for(var i = 0, child; child = this.children[i]; i++) {
-                left = child.$el.offset().left;
+                left = child.$el.offset().left + child.$el.width();
+                if(offsetLeft < left) {
+                    return i;
+                }
             }
+            return i;
         }
     });
 
