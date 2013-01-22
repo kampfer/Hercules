@@ -115,9 +115,13 @@ define('jobs/render', function(require, exports, module) {
 			return html;
 		},
 		render: function() {
-			var html = this.getHtml();
-			$(this.el).html(html);
-			this.batchDoc();
+			// var html = this.getHtml();
+			// $(this.el).html(html);
+			// this.batchDoc();
+			mydoc = new this.options.$doc({
+				el: $(this.el),
+				model : this.model
+			});
 			/*
             this.updateRowByCid('c18',
 			{

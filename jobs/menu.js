@@ -34,33 +34,42 @@ define('jobs/menu', function(require, exports, module) {
 				col: 12,
 				children: [
 				new Model.text({
-					col: 4
+					col: 4,
+					html : 'test1'
 				}), new Model.text({
-					col: 4
+					col: 4,
+					html : 'test2'
 				}), new Model.text({
-					col: 4
+					col: 4,
+					html : 'test3'
 				})]
 			},
 			{
 				col: 12,
 				children: [
 				new Model.text({
-					col: 4
+					col: 4,
+					html : 'test4'
 				}), new Model.text({
-					col: 4
+					col: 4,
+					html : 'test5'
 				}), new Model.text({
-					col: 4
+					col: 4,
+					html : 'test6'
 				})]
 			},
 			{
 				col: 12,
 				children: [
 				new Model.text({
-					col: 4
+					col: 4,
+					html : 'test7'
 				}), new Model.text({
-					col: 4
+					col: 4,
+					html : 'test8'
 				}), new Model.text({
-					col: 4
+					col: 4,
+					html : 'test9'
 				})]
 			}]);
 			this.renderAll();

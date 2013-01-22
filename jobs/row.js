@@ -13,21 +13,25 @@ define('jobs/row', function(require, exports, module) {
             this.$el.droppable({
                 drop : function(event, ui) {
                     var id = ui.draggable.attr('data-id'),
-                        column = that.ownerDocument.getChild(id);
+                        column = that.ownerDocument.getChild(id).getParent();
 
-                    var index = that.findSpanIndexByOffsetLeft(ui.offset.left);
+                    var index = that.findSpanIndexByOffsetLeft(event.pageX);
+                    console.log(index);
 
-                    if(that.children[index].$el[0] === ui.draggable[0]) {
+                    if(column.getIndex() === index) {
                         return;
                     }
-
-                    ui.draggable.insertAfter(that.children[index].$el);
+                    
+                    if(index !== 0) {
+                        column.$el.insertAfter(that.children[index].$el);
+                    } else {
+                        column.$el.prependTo(that.$el);
+                    }
                     ui.draggable.removeAttr('style');
-
-                    //index ++;
 
                     column.getParent().removeChild(column);
                     that.addChild(column, index);
+                    console.log(that);
                 },
                 tolerance : 'pointer'
             });
@@ -55,23 +59,10 @@ define('jobs/row', function(require, exports, module) {
 
         //取得左边距小于offsetLeft,且值最接近offsetLeft的column
         findSpanIndexByOffsetLeft : function(offsetLeft) {
-            var left = 0;
+            var left = 0, right = 0;
             for(var i = 0, child; child = this.children[i]; i++) {
-                left += child.spanNum * child.spanWidth;
-                if(left > offsetLeft) {
-                    return i;
-                }
+                left = child.$el.offset().left;
             }
-        },
-
-        removeChild : function() {
-            Row.__super__.removeChild.apply(this, arguments);
-            this.averageSpan();
-        },
-
-        addChild : function() {
-            Row.__super__.addChild.apply(this, arguments);
-            this.averageSpan();
         }
     });
 

@@ -17,40 +17,6 @@ define('jobs/column', function(require, exports, module) {
             var $el = this.$el,
                 that = this;
             this.spanNum = +($el.attr('data-col'));
-            this.spanWidth = $el.width() / this.spanNum;
-
-            $('<div class="drag-bar" style="display:none;"><i class="icon-move"></i></div>').appendTo($el);
-
-            $el.resizable({
-                resize : function() {
-                    var spanNum = Math.round($el.width() / that.spanWidth);
-                    var offsetSpan = spanNum - that.spanNum;
-                    if(offsetSpan) {
-                        if( that.parent && that.parent.updateNextVariableColumn(that, offsetSpan) ) {
-                            that.setSpan(spanNum);
-                        }
-                    }
-                },
-                stop : function() {
-                    $el.removeAttr('style');
-                },
-                grid : [this.spanWidth, 10],
-                minWidth : this.spanWidth,
-                maxWidth : this.spanWidth * 11
-            });
-            $el.find('.ui-resizable-s').hide();
-            $el.find('.ui-resizable-e').hide();
-
-            $el.draggable({
-                'zIndex' : 10000,
-                scroll : false,
-                handle : '.drag-bar',
-                //containment : '.container',
-                start : function() {},
-                stop : function() {
-                    $el.removeAttr('style');
-                }
-            });
         },
 
         setSpan : function(num) {
@@ -62,8 +28,8 @@ define('jobs/column', function(require, exports, module) {
             }
         },
 
-        getOffset : function() {
-            return this.$el.offset();
+        getSpanWidth : function() {
+            return this.$el.width() / this.spanNum;
         },
 
         hideDragBar : function() {

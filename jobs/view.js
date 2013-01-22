@@ -5,9 +5,16 @@ define('jobs/view', function(require, exports, module) {
         initialize : function() {
             //this.listenTo(this.model, "change", this.render);
             this.children = [];
-            //this.childrenMap = {};
             this.parent = null;
-            this.id = this.$el.attr('data-id');
+            this.id = this.cid;
+
+            if( this.$el[0].parentNode ) {
+                this._inDocument = true;
+            } else {
+                this._inDocument = false;
+            }
+
+            this.$el.attr('data-id', this.id);
         },
 
         setId : function(id) {
@@ -61,6 +68,14 @@ define('jobs/view', function(require, exports, module) {
 
                 if(child) {
                     return child;
+                }
+            }
+        },
+
+        eachChild : function(callback) {
+            if(this.children) {
+                for(var i = 0, child; child = this.children[i]; i++) {
+                    callback(child, i);
                 }
             }
         },
@@ -123,6 +138,23 @@ define('jobs/view', function(require, exports, module) {
                     this.traverse(child, callback);
                 }
             }
+        },
+
+        _inDocument : false,
+
+        enterDocument : function(elem) {
+            if(!this._inDocument) {
+                if(elem) {
+                    this.$el.appendTo(elem);
+                }else if(this.parent) {
+                    this.$el.appendTo(this.parent.$el);
+                } else {
+                    this.$el.appendTo( $('body') );
+                }
+            }
+            this.eachChild(function(node) {
+                node.enterDocument();
+            });
         },
 
         dispose : function() {
