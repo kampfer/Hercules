@@ -1,8 +1,8 @@
 define('jobs/render', function(require, exports, module) {
 	var $ = require('$'),
 	backbone = require('backbone'),
-    rowCollection = require('class/hercules-collection').row,
-    Model = require('class/hercules-model'),
+	rowCollection = require('class/hercules-collection').row,
+	Model = require('class/hercules-model'),
 	_ = require('underscore');
 
 	require('modules/jquery-ui.min');
@@ -11,6 +11,7 @@ define('jobs/render', function(require, exports, module) {
 		box: 'div[node-type=box]',
 		col: 'div[node-type=col]',
 		row: 'div[node-type=row]',
+		child: 'div[node-type=child]',
 		editbox: 'div[node-type=edit-box]'
 	};
 
@@ -76,23 +77,22 @@ define('jobs/render', function(require, exports, module) {
 		createRow: function(model) {
 			var ret = '<div class="row-fluid" node-type="row" data-id="' + model.cid + '">',
 			children = model.get('children');
-			recursion(children);
-			ret += '</div>';
-
-			function recursion(children) {
-				for (var k = 0; k < children.length; k++) {
-					ret += '<div data-id="' + children[k].cid + '" class="span' + children[k].get("col") + '" data-col="' + children[k].get("col") + '" node-type="col">' + '<div class="box" node-type="box">' + '<div class="item-box" node-type="content" data-type="' + children[k].get("type") + '">';
-					if (children[k].get('children')) {
-						ret += '<div class="row-fluid" node-type="row" data-id="' + children[k].cid + '">';
-						recursion(children[k].get('children'));
+			_.each(children, function(item) {
+				ret += '<div data-id="' + item.cid + '" class="span' + item.get("col") + '" data-col="' + item.get("col") + '" node-type="col">' + '<div class="box" node-type="box">' + '<div class="item-box" node-type="content" data-type="' + item.get('type') + '">';
+				if (item.get('type') == 'mixed') {
+					_.each(item.get('children'), function(child) {
+						ret += '<div data-id="' + child.cid + '" data-col="' + child.get("col") + '" node-type="child">';
+						ret += '<div class="box" node-type="box">';
+						ret += '<div class="item-box" node-type="content" data-type="' + child.get('type') + '">' + child.get('html') + '</div>';
 						ret += '</div>';
-					} else {
-						ret += children[k].get('html');
-					}
-					ret += '</div></div></div>';
+						ret += '</div>';
+					});
+				} else {
+					ret += item.get('html');
 				}
-			}
-
+				ret += '</div></div></div>';
+			});
+			ret += '</div>';
 			return ret;
 		},
 		recursionModel: function(model) {
@@ -110,7 +110,7 @@ define('jobs/render', function(require, exports, module) {
 			var html = this.getHtml();
 			$(this.el).html(html);
 			this.batchDoc();
-            /*
+			/*
             this.updateRowByCid('c18',
 			{
 				col: 12,
@@ -125,49 +125,42 @@ define('jobs/render', function(require, exports, module) {
 			});
             */
 		},
-        //更新方法
-        updateRowByCid:function(rootRowcid,value){
-            var row = this.model.find(function(item){
-                return item.cid == rootRowcid;
-            });
-            if(row) row.set(value);
-        },
-		removeByCid: function(rowcid, colcid) {
+		//更新方法
+		updateRowByCid: function(rootRowcid, value) {
+			var row = this.model.find(function(item) {
+				return item.cid == rootRowcid;
+			});
+			if (row) row.set(value);
+		},
+		removeByCid: function(rowcid, colcid, childcid) {
 			var self = this,
-			rowModel = this.model.getRowModel(rowcid)['current'],
-			children = rowModel.get('children');
-			if (children.length) {
-				var index = this.model.findColModelIndex(children, colcid);
-				if (index !== undefined) {
-					children.splice(index, 1);
-					this.removeOne(colcid);
-					if (!children.length) {
-						clearParentChildren(rowcid);
+			rowModel = this.model.getRowModel(rowcid),
+			children = rowModel.get('children'),
+			colmodel = this.model.findColModel(children, colcid);
+			removeChildren = function(child, cid) {
+				for (var i = 0; i < child.length; i++) {
+					if (child[i].cid == cid) {
+						child.splice(i, 1);
+						break;
 					}
 				}
-			}
-
-			function clearParentChildren(cid) {
-				var Model = self.model.getRowModel(cid);
-				if (Model.ParentChildren === undefined) {
-					self.model.remove(Model['current']);
-					self.removeOne(cid);
-					return;
+				self.removeOne(cid);
+			};
+			if (colmodel.get('type') === 'mixed') {
+				var child = colmodel.get('children');
+				removeChildren(child, childcid);
+				if (!child.length) {
+					removeChildren(children, colcid);
 				}
-				var children = Model.ParentChildren;
-				var index = self.model.findColModelIndex(children, cid);
-				if (index !== undefined) {
-					children.splice(index, 1);
-					if (!children.length) {
-						clearParentChildren(Model.parentCid);
-					} else {
-						self.removeOne(cid);
-					}
-				} else {
-					clearParentChildren(cid);
-				}
+			} else {
+				removeChildren(children, colcid);
 			}
-
+			if (!children.length) {
+				this.removeOne(rowcid);
+				this.model.remove({
+					cid: rowcid
+				});
+			}
 		},
 		addOne: function(model, collection) {
 			var html = $(this.createRow(collection.first()));
@@ -192,17 +185,19 @@ define('jobs/render', function(require, exports, module) {
 			//全部再绑定一次
 			var mydoc = new $doc({
 				el: $(this.el),
-                model:this.model,
-                updateRowByCid:this.updateRowByCid //把更新方法给$doc做改变ui时更新数据用,用法见113行
+				model: this.model,
+				updateRowByCid: this.updateRowByCid //把更新方法给$doc做改变ui时更新数据用,用法见113行
 			});
 			rows.each(function(index, rowitem) {
 				var row = new $row({
 					el: $(rowitem)
 				});
+				//一级列加入
 				$(rowitem).find(DOMS.col).each(function(index, colitem) {
-					row.addChild(new $col({
+					var col = new $col({
 						el: $(colitem)
-					}));
+					});
+					row.addChild(col);
 				});
 				mydoc.addChild(row);
 			});
@@ -213,9 +208,11 @@ define('jobs/render', function(require, exports, module) {
 			target = $(e.currentTarget),
 			rowTarget = target.closest(DOMS.row),
 			colTarget = target.closest(DOMS.col),
+			childTarget = target.closest(DOMS.child),
+			childcid = childTarget.attr('data-id'),
 			rowcid = rowTarget.attr('data-id'),
 			colcid = colTarget.attr('data-id');
-			this.removeByCid(rowcid, colcid);
+			this.removeByCid(rowcid, colcid, childcid);
 		},
 		removeOne: function(cid) {
 			var target = $('[data-id=' + cid + ']');
