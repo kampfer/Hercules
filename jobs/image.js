@@ -10,8 +10,6 @@ define('jobs/image', function(require, exports, module) {
             $('<img>').attr('src', src).appendTo(this.$el);
             $('<div class="drag-bar"><i class="icon-move"></i></div>').appendTo(this.$el);
 
-            $el.resizable();
-
             $el.draggable({
                 'zIndex' : 10000,
                 scroll : false,

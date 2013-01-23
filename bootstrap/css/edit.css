@@ -52,8 +52,15 @@
     padding:20px;
 }
 
-.text{
+div[class*=span]{
     min-height: 50px;
     background-color: white;
     border: 1px solid #ccc;
+    width:100%;
+}
+.text{
+    min-height: 50px;
+}
+.row-fluid{
+    position:relative;
 }

@@ -62,27 +62,17 @@ define('jobs/document', function(require, exports, module) {
         },
 
         createText : function(content, col) {
-            var item;
-            if(col) {
-                item = this.createColumn(col);
-            }
-
             var text = new Text({
                 tagName : 'div',
-                className : 'text',
+                className : 'span' + col,
                 attributes : {
                     'data-type' : 'text',
-                    'node-type' : 'content'
+                    'node-type' : 'content',
+                    'data-col' : col
                 }
             }, content);
 
-            if(item) {
-                item.addChild(text);
-            } else {
-                item = text;
-            }
-
-            return item;
+            return text;
         },
 
         createImage : function(src, col) {

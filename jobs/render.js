@@ -244,29 +244,26 @@ define('jobs/render', function(require, exports, module) {
 			else if(document.selection) {
 				selectedText=document.selection.createRange().text;
 			}
+
+			return selectedText;
 		},
 		bold : function(e) {
-			var selectedText = this.getSelectedText(),
-				$target = $(e.currentTarget),
-				id = $target.closest('div[data-type]').attr('data-id');
-			var text = mydoc.getChild(id);
-			var reg;
-			if(!selectedText) {
-				selectedText = text.$el.text();
-			}
-			reg = new RegExp(selectedText);
-			text.$el[0].innerHTML = text.$el[0].innerHTML.replace(reg, '<b>' + selectedText + '</b>');
-		},
-		italic : function() {
-			var selectedText = this.getSelectedText(),
-				$target = $(e.currentTarget),
-				id = $target.closest('div[data-type]').attr('data-id');
-			var node = mydoc.getChild(id).getElement().find('[node-type=content]');
+			var selectedText = this.getSelectedText();
 			if(selectedText) {
-				var reg = new RegExp(selectedText);
-				node.innerHTML.replace(reg, '<i>' + selectedText + '</i>');
-			} else {
-				node.innerHTML = '<i>' + node.innerHTML + '</i>';
+				var reg = new RegExp(selectedText),
+					id = $(e.currentTarget).closest('div[data-type]').attr('data-id'),
+					text = mydoc.getChild(id);
+				text.$el[0].innerHTML = text.$el[0].innerHTML.replace(reg, '<b>' + selectedText + '</b>');
+			}
+		},
+		italic : function(e) {
+			var selectedText = this.getSelectedText();
+			if(selectedText) {
+				var reg = new RegExp(selectedText),
+					id = $(e.target).closest('div[data-type=text]').attr('data-id'),
+					text = mydoc.getChild(id);
+				console.log($(e.target).closest('div[data-type=text]'));
+				text.$el[0].innerHTML = text.$el[0].innerHTML.replace(reg, '<i>' + selectedText + '</i>');
 			}
 		},
 		tag : function() {},

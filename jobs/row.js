@@ -13,7 +13,9 @@ define('jobs/row', function(require, exports, module) {
             this.$el.droppable({
                 drop : function(event, ui) {
                     var id = ui.draggable.attr('data-id'),
-                        column = that.ownerDocument.getChild(id).getParent();
+                        column = that.ownerDocument.getChild(id),
+                        isMixed = column.children.length > 1,
+                        row = column.getParent();
 
                     var index = that.findSpanIndexByOffsetLeft(event.pageX);
                     console.log(index);
@@ -23,7 +25,7 @@ define('jobs/row', function(require, exports, module) {
                     }
 
                     if(index !== 0) {
-                        if(column.getParent() !== that) {
+                        if(row !== that) {
                             column.$el.insertAfter(that.children[index - 1].$el);
                         } else {
                             column.$el.insertAfter(that.children[index].$el);
@@ -33,8 +35,13 @@ define('jobs/row', function(require, exports, module) {
                     }
                     ui.draggable.removeAttr('style');
 
-                    column.getParent().removeChild(column);
+                    row.removeChild(column);
                     that.addChild(column, index);
+
+                    if(row !== that) {
+                        row.averageSpan();
+                        that.averageSpan();
+                    }
 
                     console.log(that);
                 },
@@ -64,9 +71,9 @@ define('jobs/row', function(require, exports, module) {
 
         //取得左边距小于offsetLeft,且值最接近offsetLeft的column
         findSpanIndexByOffsetLeft : function(offsetLeft) {
-            var left = 0, right = 0;
+            var left = this.$el.offset().left;
             for(var i = 0, child; child = this.children[i]; i++) {
-                left = child.$el.offset().left + child.$el.width();
+                left += child.$el.width();
                 if(offsetLeft < left) {
                     return i;
                 }
