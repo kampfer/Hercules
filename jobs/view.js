@@ -6,15 +6,13 @@ define('jobs/view', function(require, exports, module) {
             //this.listenTo(this.model, "change", this.render);
             this.children = [];
             this.parent = null;
-            this.id = this.cid;
+            this.id =  this.$el.attr('data-cid');
 
             if( this.$el[0].parentNode ) {
                 this._inDocument = true;
             } else {
                 this._inDocument = false;
             }
-
-            this.$el.attr('data-id', this.id);
         },
 
         setId : function(id) {

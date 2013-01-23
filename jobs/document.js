@@ -14,88 +14,85 @@ define('jobs/document', function(require, exports, module) {
         },
 
         parseModel : function(model) {
-            var that = this;
-            function traverse(child) {
-                var grandsons = child.get('children') || [];
-                for(var i = 0, grandson; grandson = grandsons[i]; i++) {
-                    var type = grandson.get('type');
-                    var item;
-                    if(type === 'text') {
-                        item = that.createText( grandson.get('html'), grandson.get('col') );
-                    } else if(type === 'image') {
-                        item = that.createImage( grandson.get('src'), grandson.get('col') );
-                    } else if(type === 'mixed') {
-                        item = that.createMixed( grandson, grandson.get('col') );
-                    }
-
-                    row.addChild(item);
-                }
-            }
-
             model = model || this.model;
             var children = model.models;
             for(var i = 0, child; child = children[i]; i++) {
-                row = this.createRow();
-
-                this.addChild(row);
-
-                traverse(child);
+                console.log(child);
+                this.traverse2AddRow(child);
             }
         },
 
-        createRow : function() {
-            return new Row({
-                tagName : 'div',
-                className : 'row-fluid'
-            });
+        traverse2AddRow : function(child) {
+            var row = this.createRow(child);
+            this.addChild(row);
+
+            var grandsons = child.get('children') || [];
+            for(var i = 0, grandson; grandson = grandsons[i]; i++) {
+                var type = grandson.get('type');
+                var item;
+                if(type === 'text') {
+                    item = this.createText( grandson );
+                } else if(type === 'image') {
+                    item = this.createImage( grandson );
+                } else if(type === 'mixed') {
+                    item = this.createMixed( grandson );
+                }
+
+                row.addChild(item);
+            }
+
+            row.enterDocument();
         },
 
-        createColumn : function(col) {
-            return new Column({
+        createRow : function(model) {
+            return new Row({
                 tagName : 'div',
-                className : 'span' + col,
+                className : 'row-fluid',
                 attributes : {
-                    'data-col' : col,
-                    'node-type' : 'box'
+                    'data-cid' : model.cid
                 }
             });
         },
 
-        createText : function(content, col) {
+        createColumn : function(model) {
+            return new Column({
+                tagName : 'div',
+                className : 'span' + model.get('col'),
+                attributes : {
+                    'data-col' : model.get('col'),
+                    'node-type' : 'box',
+                    'data-cid' : model.cid
+                }
+            });
+        },
+
+        createText : function(model) {
             var text = new Text({
                 tagName : 'div',
-                className : 'span' + col,
+                className : 'span' + model.get('col'),
                 attributes : {
                     'data-type' : 'text',
                     'node-type' : 'content',
-                    'data-col' : col
+                    'data-col' : model.get('col'),
+                    'data-cid' : model.cid
                 }
-            }, content);
+            }, model.get('html'));
 
             return text;
         },
 
-        createImage : function(src, col) {
-            var item;
-            if(col) {
-                item = this.createColumn(col);
-            }
-
+        createImage : function(model) {
             var image = new Image({
                 tagName : 'div',
-                className : 'image',
+                className : 'span' + model.get('col'),
                 attributes : {
-                    'data-type' : 'image'
+                    'data-type' : 'image',
+                    'data-col' : model.get('col'),
+                    'data-cid' : model.cid
                 }
-            }, src);
+            }, model.get('src'));
 
-            if(item) {
-                item.addChild(image);
-            } else {
-                item = image;
-            }
-
-            return item;
+            return image;
         },
 
         createMixed : function(model, col) {

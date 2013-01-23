@@ -12,7 +12,7 @@ define('jobs/row', function(require, exports, module) {
 
             this.$el.droppable({
                 drop : function(event, ui) {
-                    var id = ui.draggable.attr('data-id'),
+                    var id = ui.draggable.attr('data-cid'),
                         column = that.ownerDocument.getChild(id),
                         isMixed = column.children.length > 1,
                         row = column.getParent();

@@ -23,9 +23,6 @@ define('blocks/image', function(require, exports, module) {
 				children: [new model.image({
                     src:url
                 })]
-			},
-			{
-				at: 0
 			});
 			this.hide();
 		}

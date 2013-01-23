@@ -176,9 +176,12 @@ define('jobs/render', function(require, exports, module) {
 			}
 		},
 		addOne: function(model, collection) {
-			var html = $(this.createRow(collection.first()));
-			$(this.el).prepend(html);
-			this.batchDoc();
+			console.log(collection.last());
+			mydoc.traverse2AddRow(collection.last());
+			//for(collection.last())
+			//var html = $(this.createRow(collection.first()));
+			//$(this.el).prepend(html);
+			//this.batchDoc();
 		},
 		clearDZP: function(els, method) {
 			els.each(function(index, item) {
@@ -251,7 +254,7 @@ define('jobs/render', function(require, exports, module) {
 			var selectedText = this.getSelectedText();
 			if(selectedText) {
 				var reg = new RegExp(selectedText),
-					id = $(e.currentTarget).closest('div[data-type]').attr('data-id'),
+					id = $(e.currentTarget).closest('div[data-type]').attr('data-cid'),
 					text = mydoc.getChild(id);
 				text.$el[0].innerHTML = text.$el[0].innerHTML.replace(reg, '<b>' + selectedText + '</b>');
 			}
@@ -260,7 +263,7 @@ define('jobs/render', function(require, exports, module) {
 			var selectedText = this.getSelectedText();
 			if(selectedText) {
 				var reg = new RegExp(selectedText),
-					id = $(e.target).closest('div[data-type=text]').attr('data-id'),
+					id = $(e.target).closest('div[data-type=text]').attr('data-cid'),
 					text = mydoc.getChild(id);
 				console.log($(e.target).closest('div[data-type=text]'));
 				text.$el[0].innerHTML = text.$el[0].innerHTML.replace(reg, '<i>' + selectedText + '</i>');
@@ -270,21 +273,21 @@ define('jobs/render', function(require, exports, module) {
 		alignLeft : function(e) {
 			var selectedText = this.getSelectedText(),
 				$target = $(e.currentTarget),
-				id = $target.closest('div[data-type]').attr('data-id');
+				id = $target.closest('div[data-type]').attr('data-cid');
 			var node = mydoc.getChild(id).$el;
 			node.css('text-align', 'left');
 		},
 		alignRight : function(e) {
 			var selectedText = this.getSelectedText(),
 				$target = $(e.currentTarget),
-				id = $target.closest('div[data-type]').attr('data-id');
+				id = $target.closest('div[data-type]').attr('data-cid');
 			var node = mydoc.getChild(id).$el;
 			node.css('text-align', 'right');
 		},
 		alignCenter : function(e) {
 			var selectedText = this.getSelectedText(),
 				$target = $(e.currentTarget),
-				id = $target.closest('div[data-type]').attr('data-id');
+				id = $target.closest('div[data-type]').attr('data-cid');
 			var node = mydoc.getChild(id).$el;
 			node.css('text-align', 'center');
 		}

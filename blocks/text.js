@@ -19,7 +19,7 @@ define('blocks/text',function(require,exports,module){
         },
         textConfirm:function(){
             var content = $('<div>'+$('[node-type=text-content]').val()+'</div>').text();
-            this.get('model').add({children:[new model.text({html:content})]},{at:0});
+            this.get('model').add({children:[new model.text({html:content})]});
             this.hide();
         }
     });
