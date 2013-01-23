@@ -20,7 +20,7 @@ define('jobs/row', function(require, exports, module) {
                     var index = that.findSpanIndexByOffsetLeft(event.pageX);
                     console.log(index);
 
-                    if(index === undefined || (column.getIndex() === index)) {
+                    if(index === undefined || (row === that && column.getIndex() === index)) {
                         return;
                     }
 
@@ -43,16 +43,23 @@ define('jobs/row', function(require, exports, module) {
                         that.averageSpan();
                     }
 
-                    console.log(that);
+                    console.log(that.ownerDocument);
                 },
                 tolerance : 'intersect'
             });
         },
 
         averageSpan : function() {
-            var span = 12 / this.children.length;
+            var baseSpan = Math.floor(12 / this.children.length),
+                lastSpan = 12 % this.children.length;
+
             for(var i = 0, child; child = this.children[i]; i++) {
-                child.setSpan(span);
+                if(i < lastSpan) {
+                    child.setSpan(baseSpan + 1);
+                } else {
+                    child.setSpan(baseSpan);
+                }
+                
             }
         },
 

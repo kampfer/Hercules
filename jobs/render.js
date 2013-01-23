@@ -119,7 +119,7 @@ define('jobs/render', function(require, exports, module) {
 			// var html = this.getHtml();
 			// $(this.el).html(html);
 			// this.batchDoc();
-			mydoc = new this.options.$doc({
+			this.doc = mydoc = new this.options.$doc({
 				el: $(this.el),
 				model : this.model
 			});
