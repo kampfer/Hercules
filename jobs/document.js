@@ -48,7 +48,8 @@ define('jobs/document', function(require, exports, module) {
                 tagName : 'div',
                 className : 'row-fluid',
                 attributes : {
-                    'data-cid' : model.cid
+                    'data-cid' : model.cid,
+                    'node-type' : 'row'
                 }
             });
         },

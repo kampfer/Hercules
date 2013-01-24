@@ -30,7 +30,7 @@ define('jobs/render', function(require, exports, module) {
 			'click [action-type=alignLeft]': 'alignLeft',
 			'click [action-type=alignCenter]': 'alignCenter',
 			'click [action-type=alignRight]': 'alignRight',
-			'click [action-type=trash]': 'trash'			
+			'click [action-type=trash]': 'trash'
 		},
 		enterBox: function(e) {
 			var item = $(e.currentTarget),
@@ -220,22 +220,31 @@ define('jobs/render', function(require, exports, module) {
 			//console.log(mydoc);
 		},
 		trash: function(e) {
-			var self = this,
-			target = $(e.currentTarget),
-			rowTarget = target.closest(DOMS.row),
-			colTarget = target.closest(DOMS.col),
-			childTarget = target.closest(DOMS.child),
-			childcid = childTarget.attr('data-id'),
-			rowcid = rowTarget.attr('data-id'),
-			colcid = colTarget.attr('data-id');
+			// var self = this,
+			// target = $(e.currentTarget),
+			// rowTarget = target.closest(DOMS.row),
+			// colTarget = target.closest(DOMS.col),
+			// childTarget = target.closest(DOMS.child),
+			// childcid = childTarget.attr('data-cid'),
+			// rowcid = rowTarget.attr('data-cid'),
+			// colcid = colTarget.attr('data-cid');
+			var colcid = $(e.currentTarget).closest('div[data-type]').attr('data-cid'),
+				col = mydoc.getChild(colcid),
+				row = col.getParent(),
+				rowcid = row.getId(),
+				childcid;
 			this.removeByCid(rowcid, colcid, childcid);
+			row.averageSpan();
 		},
 		removeOne: function(cid) {
-			var target = $('[data-id=' + cid + ']');
-			this.clearDZP(target, 'draggable');
-			this.clearDZP(target, 'resizable');
-			this.clearDZP(target, 'droppable');
-			target.remove();
+			// var target = $('[data-id=' + cid + ']');
+			// this.clearDZP(target, 'draggable');
+			// this.clearDZP(target, 'resizable');
+			// this.clearDZP(target, 'droppable');
+			// target.remove();
+			var target = mydoc.getChild(cid);
+			target.getParent().removeChild(target);
+			target.dispose();
 		},
 		getSelectedText : function() {
 			var selectedText;
