@@ -17,6 +17,11 @@ define('jobs/text', function(require, exports, module) {
             });
 
             Text.__super__.initialize.apply(this, arguments);
+        },
+
+        dispose : function() {
+            this.$text.unbind();
+            Text.__super__.dispose.call(this);
         }
     });
 

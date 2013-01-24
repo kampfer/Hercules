@@ -85,6 +85,12 @@ define('jobs/column', function(require, exports, module) {
         events:{
             'mouseenter':'showDragBar',
             'mouseleave':'hideDragBar'
+        },
+
+        dispose : function() {
+            this.$el.resizable( "destroy" );
+            this.$el.draggable( "destroy" );
+            Column.__super__.dispose.apply(this);
         }
     });
 

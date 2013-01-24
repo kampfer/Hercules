@@ -111,13 +111,11 @@ define('jobs/document', function(require, exports, module) {
             return column;
         },
 
-        translateColumn2Row : function() {
-
-        },
-
-        translateRow2Column : function() {},
-
-        export : function() {
+        dispose : function() {
+            this.traverse(this, function(node) {
+                node.dispose();
+            });
+            Document.__super__.dispose.apply(this);
         }
     });
 

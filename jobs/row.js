@@ -94,9 +94,15 @@ define('jobs/row', function(require, exports, module) {
                 var child = this.children[i];
                 child.$el.appendTo(this.$el);
             }
-        }
+        },
 
         //TODO updateView方法 销毁所有view重新生成
+        //updateView : function() {},
+
+        dispose : function() {
+            this.$el.droppable( "destroy" );
+            Row.__super__.dispose.apply(this);
+        }
     });
 
     module.exports = Row;

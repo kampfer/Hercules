@@ -1,5 +1,5 @@
 define('jobs/view', function(require, exports, module) {
-    var backbone = require('modules/backbone'); 
+    var backbone = require('modules/backbone');
 
     var View = backbone.View.extend({
         initialize : function() {
@@ -156,6 +156,7 @@ define('jobs/view', function(require, exports, module) {
         },
 
         dispose : function() {
+            this.remove();
             delete this.children;
             delete this.parent;
         }
