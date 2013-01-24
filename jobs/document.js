@@ -3,7 +3,8 @@ define('jobs/document', function(require, exports, module) {
         Row = require('jobs/row'),
         Column = require('jobs/column'),
         Image = require('jobs/image'),
-        Text = require('jobs/text');
+        Text = require('jobs/text'),
+        Model = require('class/hercules-model');
 
     var Document = View.extend({
         initialize : function() {
@@ -117,6 +118,32 @@ define('jobs/document', function(require, exports, module) {
                 node.dispose();
             });
             Document.__super__.dispose.apply(this);
+        },
+
+        updateRowByCid: function(viewRow) {
+            if(typeof viewRow === 'string') {
+                viewRow = this.getChild(viewRow);
+            }
+            var value =  {col: 12,children: []};
+            for(var i = 0, viewCol; viewCol = viewRow.children[i]; i++) {
+                if(viewCol instanceof Text) {
+                    value.children.push(new Model.text({
+                        col: viewCol.spanNum,
+                        html : viewCol.html
+                    }));
+                } else if(viewCol instanceof Image) {
+                    value.children.push(new Model.Image({
+                        col: viewCol.spanNum,
+                        src : viewCol.src
+                    }));
+                }
+            }
+
+            var rootRowcid = viewRow.getId();
+            var row = this.model.find(function(item) {
+                return item.cid == rootRowcid;
+            });
+            if (row) row.set(value);
         }
     });
 

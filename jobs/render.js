@@ -31,6 +31,8 @@ define('jobs/render', function(require, exports, module) {
 			'click [action-type=alignCenter]': 'alignCenter',
 			'click [action-type=alignRight]': 'alignRight',
 			'click [action-type=trash]': 'trash'
+			//'focus div[data-type=text]': 'editText',
+			//'blur div[data-type=text]': 'changeText'
 		},
 		enterBox: function(e) {
 			var item = $(e.currentTarget),
@@ -265,7 +267,7 @@ define('jobs/render', function(require, exports, module) {
 				var reg = new RegExp(selectedText),
 					id = $(e.currentTarget).closest('div[data-type]').attr('data-cid'),
 					text = mydoc.getChild(id);
-				text.$el[0].innerHTML = text.$el[0].innerHTML.replace(reg, '<b>' + selectedText + '</b>');
+				text.setContent( text.html.replace(reg, '<b>' + selectedText + '</b>') );
 			}
 		},
 		italic : function(e) {
@@ -275,7 +277,7 @@ define('jobs/render', function(require, exports, module) {
 					id = $(e.target).closest('div[data-type=text]').attr('data-cid'),
 					text = mydoc.getChild(id);
 				console.log($(e.target).closest('div[data-type=text]'));
-				text.$el[0].innerHTML = text.$el[0].innerHTML.replace(reg, '<i>' + selectedText + '</i>');
+				text.setContent( text.html.replace(reg, '<i>' + selectedText + '</i>') );
 			}
 		},
 		tag : function() {},

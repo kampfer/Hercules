@@ -45,6 +45,9 @@ define('jobs/row', function(require, exports, module) {
                         that.averageSpan();
                     }
 
+                    that.ownerDocument.updateRowByCid(row);
+                    that.ownerDocument.updateRowByCid(that);
+
                     console.log(that.ownerDocument);
                 },
                 tolerance : 'intersect'
