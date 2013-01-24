@@ -17,7 +17,6 @@ define('jobs/document', function(require, exports, module) {
             model = model || this.model;
             var children = model.models;
             for(var i = 0, child; child = children[i]; i++) {
-                console.log(child);
                 this.traverse2AddRow(child);
             }
         },

@@ -22,7 +22,7 @@ define('jobs/column', function(require, exports, module) {
                 resize : function(event, ui) {
                     var spanNum = Math.round($el.width() / that.spanWidth);
                     var offsetSpan = spanNum - that.spanNum;
-                    if(offsetSpan) {
+                    if(spanNum && offsetSpan) {
                         if( that.parent && that.parent.updateNextVariableColumn(that, offsetSpan) ) {         
                             that.setSpan(spanNum);
                         }

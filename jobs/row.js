@@ -24,19 +24,21 @@ define('jobs/row', function(require, exports, module) {
                         return;
                     }
 
-                    if(index !== 0) {
-                        if(row !== that) {
-                            column.$el.insertAfter(that.children[index - 1].$el);
-                        } else {
-                            column.$el.insertAfter(that.children[index].$el);
-                        }
-                    } else {
-                        column.$el.prependTo(that.$el);
-                    }
+                    // if(index !== 0) {
+                    //     if(row !== that) {
+                    //         column.$el.insertAfter(that.children[index - 1].$el);
+                    //     } else {
+                    //         column.$el.insertAfter(that.children[index].$el);
+                    //     }
+                    // } else {
+                    //     column.$el.prependTo(that.$el);
+                    // }
                     ui.draggable.removeAttr('style');
 
                     row.removeChild(column);
                     that.addChild(column, index);
+
+                    that.updateViewIndex();
 
                     if(row !== that) {
                         row.averageSpan();
@@ -59,7 +61,6 @@ define('jobs/row', function(require, exports, module) {
                 } else {
                     child.setSpan(baseSpan);
                 }
-                
             }
         },
 
@@ -67,9 +68,9 @@ define('jobs/row', function(require, exports, module) {
             var index = column.getIndex(), nextColumn;
 
             for(var i = index + 1; i < this.children.length; i++) {
-                if( (offset > 0 && this.children[i].spanNum > 1) ||
-                    (offset < 0 && this.children[i].spanNum < 12) ) {
-                    nextColumn = this.children[i];
+                nextColumn = this.children[i];
+                if( (offset > 0 && nextColumn.spanNum - offset > 0) ||
+                    (offset < 0 && nextColumn.spanNum - offset < 12) ) {
                     nextColumn.setSpan(nextColumn.spanNum - offset);
                     return true;
                 }
@@ -86,7 +87,16 @@ define('jobs/row', function(require, exports, module) {
                 }
             }
             return i;
+        },
+
+        updateViewIndex : function(index) {
+            for(var i = 0; i < this.children.length; i++) {
+                var child = this.children[i];
+                child.$el.appendTo(this.$el);
+            }
         }
+
+        //TODO updateView方法 销毁所有view重新生成
     });
 
     module.exports = Row;
