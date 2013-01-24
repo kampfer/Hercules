@@ -50,7 +50,7 @@ define('jobs/row', function(require, exports, module) {
 
                     console.log(that.ownerDocument);
                 },
-                tolerance : 'intersect'
+                tolerance : 'touch'
             });
         },
 

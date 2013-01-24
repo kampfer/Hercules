@@ -24,8 +24,7 @@ define('jobs/document', function(require, exports, module) {
 
         traverse2AddRow : function(child) {
             var row = this.createRow(child);
-            this.addChild(row);
-
+            
             var grandsons = child.get('children') || [];
             for(var i = 0, grandson; grandson = grandsons[i]; i++) {
                 var type = grandson.get('type');
@@ -41,6 +40,7 @@ define('jobs/document', function(require, exports, module) {
                 row.addChild(item);
             }
 
+            this.addChild(row);
             row.enterDocument();
         },
 
@@ -129,7 +129,7 @@ define('jobs/document', function(require, exports, module) {
                 if(viewCol instanceof Text) {
                     value.children.push(new Model.text({
                         col: viewCol.spanNum,
-                        html : viewCol.html
+                        html : viewCol.$text[0].outerHTML
                     }));
                 } else if(viewCol instanceof Image) {
                     value.children.push(new Model.Image({

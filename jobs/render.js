@@ -109,6 +109,7 @@ define('jobs/render', function(require, exports, module) {
 		recursionModel: function(model) {
 			var ret = '';
 			for (var i = 0; i < model.length; i++) {
+				console.log(model);
 				ret += this.createRow(model.models[i]);
 			}
 			return ret;
@@ -285,22 +286,25 @@ define('jobs/render', function(require, exports, module) {
 			var selectedText = this.getSelectedText(),
 				$target = $(e.currentTarget),
 				id = $target.closest('div[data-type]').attr('data-cid');
-			var node = mydoc.getChild(id).$el;
-			node.css('text-align', 'left');
+			var node = mydoc.getChild(id);
+			node.$text.css('text-align', 'left');
+			mydoc.updateRowByCid(node.getParent());
 		},
 		alignRight : function(e) {
 			var selectedText = this.getSelectedText(),
 				$target = $(e.currentTarget),
 				id = $target.closest('div[data-type]').attr('data-cid');
-			var node = mydoc.getChild(id).$el;
-			node.css('text-align', 'right');
+			var node = mydoc.getChild(id);
+			node.$text.css('text-align', 'right');
+			mydoc.updateRowByCid(node.getParent());
 		},
 		alignCenter : function(e) {
 			var selectedText = this.getSelectedText(),
 				$target = $(e.currentTarget),
 				id = $target.closest('div[data-type]').attr('data-cid');
-			var node = mydoc.getChild(id).$el;
-			node.css('text-align', 'center');
+			var node = mydoc.getChild(id);
+			node.$text.css('text-align', 'center');
+			mydoc.updateRowByCid(node.getParent());
 		}
 	});
 
