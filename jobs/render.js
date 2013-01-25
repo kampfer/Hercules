@@ -109,7 +109,6 @@ define('jobs/render', function(require, exports, module) {
 		recursionModel: function(model) {
 			var ret = '';
 			for (var i = 0; i < model.length; i++) {
-				console.log(model);
 				ret += this.createRow(model.models[i]);
 			}
 			return ret;
@@ -179,7 +178,6 @@ define('jobs/render', function(require, exports, module) {
 			}
 		},
 		addOne: function(model, collection) {
-			console.log(collection.last());
 			mydoc.traverse2AddRow(collection.last());
 			//for(collection.last())
 			//var html = $(this.createRow(collection.first()));
@@ -238,6 +236,7 @@ define('jobs/render', function(require, exports, module) {
 				childcid;
 			this.removeByCid(rowcid, colcid, childcid);
 			row.averageSpan();
+			mydoc.updateRowByCid(row);
 		},
 		removeOne: function(cid) {
 			// var target = $('[data-id=' + cid + ']');
@@ -245,8 +244,8 @@ define('jobs/render', function(require, exports, module) {
 			// this.clearDZP(target, 'resizable');
 			// this.clearDZP(target, 'droppable');
 			// target.remove();
-			var target = mydoc.getChild(cid);
-			target.getParent().removeChild(target);
+			var target = mydoc.getChild(cid), parent = target.getParent();
+			parent.removeChild(target);
 			target.dispose();
 		},
 		getSelectedText : function() {

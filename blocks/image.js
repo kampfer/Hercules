@@ -24,7 +24,6 @@ define('blocks/image', function(require, exports, module) {
                     src:url
                 })]
 			});
-            console.log(this.get('model'));
 			this.hide();
 		}
 	});

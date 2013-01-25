@@ -25,6 +25,7 @@ define('jobs/column', function(require, exports, module) {
                     if(spanNum && offsetSpan) {
                         if( that.parent && that.parent.updateNextVariableColumn(that, offsetSpan) ) {         
                             that.setSpan(spanNum);
+                            that.ownerDocument.updateRowByCid(that.getParent());
                         }
                     }
                 },

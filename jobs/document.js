@@ -24,6 +24,7 @@ define('jobs/document', function(require, exports, module) {
 
         traverse2AddRow : function(child) {
             var row = this.createRow(child);
+            this.addChild(row);
             
             var grandsons = child.get('children') || [];
             for(var i = 0, grandson; grandson = grandsons[i]; i++) {
@@ -40,7 +41,6 @@ define('jobs/document', function(require, exports, module) {
                 row.addChild(item);
             }
 
-            this.addChild(row);
             row.enterDocument();
         },
 
@@ -124,26 +124,41 @@ define('jobs/document', function(require, exports, module) {
             if(typeof viewRow === 'string') {
                 viewRow = this.getChild(viewRow);
             }
-            var value =  {col: 12,children: []};
-            for(var i = 0, viewCol; viewCol = viewRow.children[i]; i++) {
-                if(viewCol instanceof Text) {
-                    value.children.push(new Model.text({
-                        col: viewCol.spanNum,
-                        html : viewCol.$text[0].outerHTML
-                    }));
-                } else if(viewCol instanceof Image) {
-                    value.children.push(new Model.Image({
-                        col: viewCol.spanNum,
-                        src : viewCol.src
-                    }));
-                }
-            }
 
             var rootRowcid = viewRow.getId();
             var row = this.model.find(function(item) {
                 return item.cid == rootRowcid;
             });
-            if (row) row.set(value);
+
+            if(viewRow.children.length === 0) {
+                viewRow.dispose();
+                row.destroy();
+                return;
+            }
+
+            var value =  {col: 12,children: []};
+            for(var i = 0, viewCol; viewCol = viewRow.children[i]; i++) {
+                var itemModel;
+                if(viewCol instanceof Text) {
+                    itemModel = new Model.text({
+                        col: viewCol.spanNum,
+                        html : viewCol.$text[0].outerHTML
+                    });
+                    
+                } else if(viewCol instanceof Image) {
+                    itemModel = new Model.image({
+                        col: viewCol.spanNum,
+                        src : viewCol.src
+                    })
+                }
+                viewCol.id = itemModel.cid;
+                viewCol.$el.attr('data-cid', itemModel.cid);
+                value.children.push(itemModel);
+            }
+
+            if (row) {
+                row.set(value);
+            }
         }
     });
 

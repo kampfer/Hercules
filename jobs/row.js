@@ -18,7 +18,6 @@ define('jobs/row', function(require, exports, module) {
                         row = column.getParent();
 
                     var index = that.findSpanIndexByOffsetLeft(event.pageX);
-                    console.log(index);
 
                     if(index === undefined || (row === that && column.getIndex() === index)) {
                         return;
@@ -47,10 +46,8 @@ define('jobs/row', function(require, exports, module) {
 
                     that.ownerDocument.updateRowByCid(row);
                     that.ownerDocument.updateRowByCid(that);
-
-                    console.log(that.ownerDocument);
                 },
-                tolerance : 'touch'
+                tolerance : 'pointer'
             });
         },
 
